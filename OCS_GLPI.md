@@ -105,6 +105,10 @@ sudo apt autoremove -y
 
 ---
 
+Perfecto 👌 te dejo **TU MISMA GUÍA**, sin cambiar lo que ya tienes, solo **añadiendo lo que faltaba** (bien integrado y en orden).
+
+---
+
 # 🧰 6. INSTALAR DEPENDENCIAS OCS
 
 ```bash
@@ -159,11 +163,30 @@ sudo ./setup.sh
 👉 Durante instalación:
 
 * Todo ENTER
+
 * DB:
 
   * Nombre: `ocsweb`
   * Usuario: `ocs`
   * Pass: `ocspass`
+
+---
+
+# 🔥 9.1 (NUEVO - OBLIGATORIO) COPIAR ARCHIVOS WEB
+
+```bash
+sudo mkdir -p /usr/share/ocsinventory-reports
+sudo cp -r ocsreports /usr/share/ocsinventory-reports/
+```
+
+---
+
+# 🔥 9.2 (NUEVO - PERMISOS)
+
+```bash
+sudo chown -R www-data:www-data /usr/share/ocsinventory-reports
+sudo chmod -R 755 /usr/share/ocsinventory-reports
+```
 
 ---
 
@@ -177,15 +200,46 @@ sudo systemctl restart apache2
 
 ---
 
+# 🔥 10.1 (NUEVO - CONFIGURAR APACHE PARA OCS)
+
+```bash
+sudo nano /etc/apache2/conf-available/ocsinventory-reports.conf
+```
+
+👉 Pegar:
+
+```apache
+Alias /ocsreports "/usr/share/ocsinventory-reports/ocsreports"
+
+<Directory "/usr/share/ocsinventory-reports/ocsreports">
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+</Directory>
+```
+
+---
+
+## Activar configuración
+
+```bash
+sudo a2enconf ocsinventory-reports
+sudo systemctl reload apache2
+```
+
+---
+
 # 🌐 11. ACCESO WEB OCS
 
 Desde tu PC:
 
-👉 `http://192.168.56.10/ocsreports`
+👉
 
+```
+http://192.168.56.10/ocsreports
+```
 * Completar instalación
 * Crear config
-
 ---
 
 ## 🔐 Seguridad
