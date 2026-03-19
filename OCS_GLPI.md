@@ -172,7 +172,7 @@ sudo ./setup.sh
 
 ---
 
-# 🔥 9.1 (NUEVO - OBLIGATORIO) COPIAR ARCHIVOS WEB
+# 🔥 9.1 COPIAR ARCHIVOS WEB
 
 ```bash
 sudo mkdir -p /usr/share/ocsinventory-reports
@@ -181,7 +181,7 @@ sudo cp -r ocsreports /usr/share/ocsinventory-reports/
 
 ---
 
-# 🔥 9.2 (NUEVO - PERMISOS)
+# 🔥 9.2 PERMISOS
 
 ```bash
 sudo chown -R www-data:www-data /usr/share/ocsinventory-reports
@@ -200,7 +200,7 @@ sudo systemctl restart apache2
 
 ---
 
-# 🔥 10.1 (NUEVO - CONFIGURAR APACHE PARA OCS)
+# 🔥 10.1 CONFIGURAR APACHE PARA OCS
 
 ```bash
 sudo nano /etc/apache2/conf-available/ocsinventory-reports.conf
