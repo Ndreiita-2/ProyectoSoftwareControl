@@ -1,96 +1,202 @@
-# 🧱 🖥️ 1. Arquitectura del laboratorio
+# 🧱 🧭 VISIÓN GENERAL
 
-Vas a crear:
+Vas a montar:
 
-### 🔹 VM 1 — Servidor (Linux)
+* 🖥️ 1 VM servidor (Ubuntu)
 
-* Ubuntu Server
-* IP fija (ej: `192.168.56.10`)
-* OCS + GLPI
+* 💻 1 VM cliente (Windows)
 
-### 🔹 VM 2 — Cliente (Windows)
+* 🌐 2 redes:
 
-* Windows 10/11
-* IP (ej: `192.168.56.20`)
-* Agente OCS
+  * NAT → internet
+  * Host-Only → laboratorio
 
----
+* 🧠 Software:
 
-# 🌐 🧩 2. Red en VirtualBox (IMPORTANTE)
-
-Configura ambas VMs en:
-
-👉 **Red interna o Host-Only Adapter**
-
-Recomendado:
-
-* Adaptador: **Host-Only**
-* Rango típico: `192.168.56.0/24`
+  * OCS Inventory NG
+  * GLPI
 
 ---
 
-# 🟢 🐧 3. Instalar servidor Ubuntu
+# 🧱 1. CREAR VM EN VirtualBox
 
-Descarga:
+## 🖥️ Servidor Ubuntu
 
-* Ubuntu Server 22.04
+* RAM: 4 GB
+* CPU: 2
+* Disco: 40 GB (dinámico)
+
+---
+
+# 🌐 2. CONFIGURAR RED (CLAVE)
+
+## 🔹 Adaptador 1
+
+* Tipo: **NAT** ✅
+  👉 Internet
+
+## 🔹 Adaptador 2
+
+* Tipo: **Adaptador sólo anfitrión**
+* Nombre: `vboxnet0` ✅
+  👉 Red interna
+
+---
+
+# 🧠 Resultado esperado
+
+| Interfaz | Uso       |
+| -------- | --------- |
+| enp0s3   | NAT       |
+| enp0s8   | Host-Only |
+
+---
+
+# 🐧 3. INSTALAR UBUNTU SERVER
 
 Durante instalación:
 
-* IP manual:
-
-  ```
-  IP: 192.168.56.10
-  Gateway: 192.168.56.1 (o vacío si no usas salida)
-  DNS: 8.8.8.8
-  ```
+* Usuario: `sc`
+* Password:
+* Instala OpenSSH ✔️
 
 ---
 
-# ⚙️ 🧰 4. Instalar OCS Inventory
+# ⚙️ 4. CONFIGURAR RED (NETPLAN)
 
-Dentro del servidor:
+Editar:
 
-Actualizamos paquetes:
+```bash
+sudo nano /etc/netplan/00-installer-config.yaml
+```
+
+👉 Dejar EXACTAMENTE así:
+
+```yaml
+network:
+  version: 2
+  ethernets:
+    enp0s3:   # NAT (internet)
+      dhcp4: true
+
+    enp0s8:   # Host-Only (red laboratorio)
+      dhcp4: false
+      addresses:
+        - 192.168.56.10/24
+```
+
+---
+
+## 🔄 Aplicar
+
+```bash
+sudo netplan apply
+```
+
+---
+
+# 🔄 5. ACTUALIZAR SISTEMA
 
 ```bash
 sudo apt update
 sudo apt upgrade -y
-```
-
-Instalamos dependencias:
-
-```bash
-sudo apt install -y apache2 mariadb-server php php-mysql php-curl php-xml php-mbstring git unzip
+sudo apt autoremove -y
 ```
 
 ---
 
-### 🔹 Descargar OCS
+# 🧰 6. INSTALAR DEPENDENCIAS OCS
+
+```bash
+sudo apt install -y apache2 mariadb-server php php-mysql php-curl php-xml php-mbstring php-zip libapache2-mod-perl2 libnet-ip-perl libxml-simple-perl libarchive-zip-perl libio-compress-perl
+```
+
+---
+
+# 🔐 7. CONFIGURAR MYSQL
+
+```bash
+sudo mysql_secure_installation
+```
+
+👉 Todo YES
+
+---
+
+## Crear base de datos
+
+```bash
+sudo mysql -u root -p
+```
+
+```sql
+CREATE DATABASE ocsweb;
+CREATE USER 'ocs'@'localhost' IDENTIFIED BY 'ocspass';
+GRANT ALL PRIVILEGES ON ocsweb.* TO 'ocs'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+---
+
+# 📦 8. DESCARGAR OCS
 
 ```bash
 cd /opt
 sudo wget https://github.com/OCSInventory-NG/OCSInventory-Server/releases/latest/download/OCSNG_UNIX_SERVER-latest.tar.gz
 sudo tar -xvzf OCSNG_UNIX_SERVER-latest.tar.gz
 cd OCSNG_UNIX_SERVER-*
+```
+
+---
+
+# ⚙️ 9. INSTALAR OCS
+
+```bash
 sudo ./setup.sh
 ```
 
-👉 Sigue el instalador (todo por defecto suele ir bien)
+👉 Durante instalación:
+
+* Todo ENTER
+* DB:
+
+  * Nombre: `ocsweb`
+  * Usuario: `ocs`
+  * Pass: `ocspass`
 
 ---
 
-### 🔹 Finalizar instalación
+# 🔧 10. ACTIVAR APACHE
 
-Accede desde tu navegador (host):
+```bash
+sudo a2enmod rewrite
+sudo a2enmod headers
+sudo systemctl restart apache2
+```
+
+---
+
+# 🌐 11. ACCESO WEB OCS
+
+Desde tu PC:
 
 👉 `http://192.168.56.10/ocsreports`
 
-Ahí terminarás el setup web
+* Completar instalación
+* Crear config
 
 ---
 
-# 🟢 🧠 5. Instalar GLPI
+## 🔐 Seguridad
+
+```bash
+sudo rm -f /usr/share/ocsinventory-reports/ocsreports/install.php
+```
+
+---
+
+# 🧱 12. INSTALAR GLPI
 
 ```bash
 cd /var/www/html
@@ -101,61 +207,98 @@ sudo chown -R www-data:www-data glpi
 
 ---
 
-### 🔹 Acceso web
+# 🌐 13. ACCESO GLPI
 
 👉 `http://192.168.56.10/glpi`
 
 * Usuario: `glpi`
 * Password: `glpi`
 
-(Sigue asistente)
-
 ---
 
-# 🔗 🔥 6. Conectar GLPI con OCS
+# 🔗 14. CONECTAR GLPI CON OCS
 
 Dentro de GLPI:
 
-1. Ir a:
-   👉 **Configuración → Plugins**
-2. Instalar plugin OCS (si no viene incluido)
-3. Configurar conexión:
+* Plugins → instalar OCS
+* Configurar:
 
-   * Host: `localhost`
-   * Usuario DB
-   * Base de datos OCS
-
-💡 Esto hace que GLPI “lea” lo que recoge OCS
+  * Host: `localhost`
+  * DB: `ocsweb`
+  * Usuario: `ocs`
+  * Pass: `ocspass`
 
 ---
 
-# 🖥️ 💻 7. Crear cliente Windows
+# 💻 15. CLIENTE WINDOWS
 
-En otra VM:
+Crear VM:
 
-* Instala Windows
-* IP manual:
+* RAM: 2 GB
+* Red:
 
-  ```
-  192.168.56.20
-  ```
+  * NAT
+  * Host-Only
 
----
+IP manual:
 
-# 📦 ⚙️ 8. Instalar agente OCS en cliente
-
-Descarga:
-👉 [https://ocsinventory-ng.org](https://ocsinventory-ng.org)
-
-Instala con:
-
-* Server: `http://192.168.56.10/ocsinventory`
-
-💡 MUY IMPORTANTE: poner bien la URL
+```
+192.168.56.20
+```
 
 ---
 
-# 🚀 9. Ver resultados
+# 📦 16. INSTALAR AGENTE OCS
+
+En Windows:
+
+* Descargar agente OCS
+* Instalar con:
+
+```
+http://192.168.56.10/ocsinventory
+```
+
+---
+
+# 🎉 17. RESULTADO FINAL
+
+En OCS / GLPI verás:
+
+* Equipos conectados
+* Software instalado
+* Hardware
+
+---
+
+# 🚀 CONCLUSIÓN
+
+👉 Con esto tienes:
+
+* Laboratorio completo
+* Control centralizado
+* Simulación real de empresa
+
+---
+
+# 💡 Si quieres siguiente nivel
+
+Te puedo enseñar:
+
+* Despliegue por GPO
+* Informes de software prohibido
+* Automatización
+* Alertas
+
+---
+
+👉 Ahora dime:
+
+¿en qué paso estás exactamente?
+y te acompaño en tiempo real hasta que lo tengas funcionando 😄
+
+
+# 🚀 18. Ver resultados
 
 Después de instalar el agente:
 
@@ -176,10 +319,3 @@ Después de instalar el agente:
 
 ---
 
-# ⚠️ Problemas típicos
-
-* ❌ No aparece cliente → firewall o URL mal
-* ❌ GLPI no ve OCS → conexión DB mal
-* ❌ Agente no reporta → servicio parado
-
----
