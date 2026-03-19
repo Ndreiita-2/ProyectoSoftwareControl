@@ -53,6 +53,7 @@ Dentro del servidor:
 
 ```bash
 sudo apt update
+sudo apt upgrade -y
 sudo apt install -y apache2 mariadb-server php php-mysql php-curl php-xml php-mbstring git unzip
 ```
 
