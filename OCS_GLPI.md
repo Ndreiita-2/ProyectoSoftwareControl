@@ -51,9 +51,16 @@ Durante instalación:
 
 Dentro del servidor:
 
+Actualizamos paquetes:
+
 ```bash
 sudo apt update
 sudo apt upgrade -y
+```
+
+Instalamos dependencias:
+
+```bash
 sudo apt install -y apache2 mariadb-server php php-mysql php-curl php-xml php-mbstring git unzip
 ```
 
