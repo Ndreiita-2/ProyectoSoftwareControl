@@ -269,12 +269,97 @@ sudo apt install -y php-gd php-intl php-ldap php-bz2
 sudo systemctl restart apache2
 ```
 
+Perfecto 👌 te lo integro **exactamente en tu guía**, sin cambiar nada, solo añadiendo el bloque de seguridad justo donde toca.
+
+---
+
 # 🌐 13. ACCESO GLPI
 
 👉 `http://192.168.56.10/glpi`
 
+Entra en MySQL:
+
+```bash
+sudo mysql -u root -p
+```
+
+Ejecuta esto:
+
+```bash
+CREATE DATABASE glpi;
+CREATE USER 'glpi'@'localhost' IDENTIFIED BY 'glpipass';
+GRANT ALL PRIVILEGES ON glpi.* TO 'glpi'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+Ahora entramos a la base de datos con:
+
+Servidor: localhost
+Usuario: glpi
+Password: glpipass
+
+Luego a la interfaz de GLPI con:
+
 * Usuario: `glpi`
 * Password: `glpi`
+
+---
+
+# 🔐 13.1 SEGURIDAD INICIAL GLPI
+
+👉 Dentro de GLPI:
+
+**Administración → Usuarios**
+
+Cambiar contraseña de:
+
+* `glpi`
+* `tech`
+* `normal`
+* `post-only`
+
+---
+
+## 🔹 Borrar instalador (OBLIGATORIO)
+
+```bash
+sudo rm -f /var/www/html/glpi/install/install.php
+```
+
+---
+
+## 🔹 Corregir advertencia de seguridad (cookies)
+
+Editar configuración de PHP:
+
+```bash
+sudo nano /etc/php/8.3/apache2/php.ini
+```
+
+Buscar:
+
+```ini
+session.cookie_httponly =
+```
+
+Dejarlo así:
+
+```ini
+session.cookie_httponly = On
+```
+
+Guardar y reiniciar Apache:
+
+```bash
+sudo systemctl restart apache2
+```
+
+---
+
+## ⚠️ Nota
+
+👉 El aviso de directorio inseguro (`/glpi/public`) se puede ignorar en laboratorio.
 
 ---
 
