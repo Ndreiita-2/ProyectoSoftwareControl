@@ -240,6 +240,7 @@ http://192.168.56.10/ocsreports
 ```
 * Completar instalación
 * Crear config
+* Entramos con: admin/admin
 ---
 
 ## 🔐 Seguridad
