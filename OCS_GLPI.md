@@ -144,8 +144,8 @@ EXIT;
 ```bash
 cd /opt
 sudo wget https://github.com/OCSInventory-NG/OCSInventory-ocsreports/releases/download/2.12.3/OCSNG_UNIX_SERVER-2.12.3.tar.gz
-sudo tar -xvzf OCSNG_UNIX_SERVER-latest.tar.gz
-cd OCSNG_UNIX_SERVER-*
+sudo tar -xvzf OCSNG_UNIX_SERVER-2.12.3.tar.gz
+cd OCSNG_UNIX_SERVER-2.12.3
 ```
 
 ---
