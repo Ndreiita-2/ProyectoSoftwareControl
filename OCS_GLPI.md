@@ -375,6 +375,71 @@ Dentro de GLPI:
   * Usuario: `ocs`
   * Pass: `ocspass`
 
+## ❗ CORREGIR ERROR TRACE_DELETED 
+
+👉 Si aparece el error:
+
+```text
+Configuración OCSNG incorrecta (debe activar TRACE_DELETED)
+```
+
+---
+
+### 🔹 Entrar en MariaDB
+
+```bash
+sudo mysql -u root -p
+```
+
+---
+
+### 🔹 Ejecutar:
+
+```sql
+USE ocsweb;
+
+SELECT NAME, IVALUE FROM config WHERE NAME='TRACE_DELETED';
+```
+
+---
+
+### 🔹 Si NO existe:
+
+```sql
+INSERT INTO config (NAME, IVALUE) VALUES ('TRACE_DELETED','1');
+```
+
+---
+
+### 🔹 Si vale 0:
+
+```sql
+UPDATE config SET IVALUE='1' WHERE NAME='TRACE_DELETED';
+```
+
+---
+
+### 🔹 Salir:
+
+```sql
+EXIT;
+```
+
+---
+
+### 🔄 Reiniciar Apache
+
+```bash
+sudo systemctl restart apache2
+```
+
+---
+
+### 🔁 IMPORTANTE
+
+👉 Cerrar sesión en GLPI y volver a entrar
+
+
 ---
 
 # 💻 15. CLIENTE WINDOWS
