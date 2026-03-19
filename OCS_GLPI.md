@@ -255,7 +255,7 @@ sudo rm -f /usr/share/ocsinventory-reports/ocsreports/install.php
 
 ```bash
 cd /var/www/html
-sudo wget https://github.com/glpi-project/glpi/releases/latest/download/glpi.tgz
+sudo wget https://github.com/glpi-project/glpi/releases/download/10.0.16/glpi-10.0.16.tgz
 sudo tar -xvzf glpi.tgz
 sudo chown -R www-data:www-data glpi
 ```
