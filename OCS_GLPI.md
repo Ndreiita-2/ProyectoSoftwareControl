@@ -262,6 +262,13 @@ sudo chown -R www-data:www-data glpi
 
 ---
 
+Instalar extensiones faltantes
+
+```bash
+sudo apt install -y php-gd php-intl php-ldap php-bz2
+sudo systemctl restart apache2
+```
+
 # 🌐 13. ACCESO GLPI
 
 👉 `http://192.168.56.10/glpi`
