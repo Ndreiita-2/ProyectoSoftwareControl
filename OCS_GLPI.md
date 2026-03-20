@@ -460,6 +460,195 @@ IP manual:
 
 ---
 
+----------------------------------------------------------------------------------------------------------------
+Perfecto 👌 ahora sí estamos haciendo lo correcto: **volver a limpio y hacerlo bien desde el punto clave**.
+
+He leído toda tu guía y te confirmo algo importante:
+
+👉 **Todo tu servidor está BIEN montado**
+👉 El único punto crítico es el **paso 15–16 (cliente + agente)**
+
+---
+
+# 🧠 📍 DONDE ESTÁS AHORA
+
+👉 Estás en:
+
+**💻 Paso 15 – Cliente Windows**
+
+Esto significa que ahora SOLO hay que hacer bien:
+
+👉 Red
+👉 Conectividad
+👉 Agente OCS
+
+---
+
+# 🔥 VAMOS PASO A PASO (SIN SALTOS)
+
+## ✅ PASO 15.1 – CONFIGURAR RED EN WINDOWS
+
+En tu cliente Windows:
+
+👉 IP manual:
+
+* IP: `192.168.56.20`
+* Máscara: `255.255.255.0`
+* Puerta de enlace: ❌ (vacío)
+* DNS: `8.8.8.8`
+
+---
+
+## 🧪 PASO 15.2 – PROBAR CONEXIÓN (OBLIGATORIO)
+
+Abre CMD:
+
+```cmd
+ping 192.168.56.10
+```
+
+---
+
+## 🎯 RESULTADO
+
+* ✔️ Responde → seguimos
+* ❌ No responde → problema de red (NO sigas)
+
+---
+
+## 🌐 PASO 15.3 – PROBAR WEB
+
+En navegador de Windows:
+
+👉 Abre:
+
+```text
+http://192.168.56.10/ocsreports
+```
+
+👉 y también:
+
+```text
+http://192.168.56.10/ocsinventory
+```
+
+---
+
+## 🎯 RESULTADO
+
+| URL             | Resultado correcto |
+| --------------- | ------------------ |
+| `/ocsreports`   | interfaz OCS       |
+| `/ocsinventory` | página en blanco   |
+
+---
+
+# 🔥 PASO 16 – INSTALAR AGENTE (CRÍTICO)
+
+Cuando instales el agente de OCS Inventory NG:
+
+---
+
+## ⚠️ MUY IMPORTANTE
+
+Cuando te pida:
+
+```text
+Server URL
+```
+
+👉 PON EXACTAMENTE:
+
+```text
+http://192.168.56.10/ocsinventory
+```
+
+---
+
+## ✔️ MARCA ESTO
+
+* ✔️ Service mode
+* ✔️ Launch inventory immediately
+
+---
+
+# 🚀 DESPUÉS DE INSTALAR
+
+## 🔁 Forzar envío
+
+CMD como admin:
+
+```cmd
+net stop "OCS Inventory Service"
+net start "OCS Inventory Service"
+```
+
+---
+
+# 🧪 COMPROBACIÓN FINAL
+
+En servidor Ubuntu:
+
+```bash
+sudo tail -f /var/log/apache2/access.log
+```
+
+👉 Luego reinicias el servicio en Windows
+
+---
+
+## 🎯 Debes ver:
+
+```text
+POST /ocsinventory
+```
+
+---
+
+# 🖥️ RESULTADO FINAL
+
+👉 Entra a:
+
+```text
+http://192.168.56.10/ocsreports
+```
+
+👉 Y verás el equipo 🎉
+
+---
+
+# 🧠 RESUMEN CLAVE (LO MÁS IMPORTANTE)
+
+💥 En todo tu laboratorio, SOLO hay 3 cosas críticas:
+
+1. Red funciona (ping)
+2. `/ocsinventory` responde
+3. Agente apunta a `/ocsinventory`
+
+---
+
+# 🚀 AHORA MISMO
+
+👉 Haz SOLO esto y dime:
+
+1. Resultado de:
+
+   ```cmd
+   ping 192.168.56.10
+   ```
+
+2. Qué ves en:
+
+   ```
+   http://192.168.56.10/ocsinventory
+   ```
+
+---
+
+👉 Con eso te guío en tiempo real hasta que aparezca el equipo 👌🔥
+
+----------------------------------------------------------------------------------------------------------------
+
 # 📦 16. INSTALAR AGENTE OCS
 
 En Windows:
