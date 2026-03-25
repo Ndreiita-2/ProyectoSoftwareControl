@@ -230,21 +230,11 @@ En consola OCS:
 
 ***
 
-# 🎉 **Instalación finalizada correctamente**
-
-Esta es la guía oficial, robusta y totalmente funcional que puedes guardar en tu repositorio.
-
-Si quieres también la guía:
 
 *   **Instalación de GLPI**
 *   **Integración OCS ↔ GLPI**
 *   **Control de software prohibido**
 *   **Despliegue de agentes por GPO**
-
-Solo dímelo y te la preparo en el mismo formato Markdown.
-
------------------------------------------------------------------------------------
-
 
 # 🧱 🧭 VISIÓN GENERAL
 
@@ -350,10 +340,6 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
 ```
-
----
-
-Perfecto 👌 te dejo **TU MISMA GUÍA**, sin cambiar lo que ya tienes, solo **añadiendo lo que faltaba** (bien integrado y en orden).
 
 ---
 
