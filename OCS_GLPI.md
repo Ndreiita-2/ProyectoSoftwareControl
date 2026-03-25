@@ -1,15 +1,4 @@
------------------------------------------------------------------------------------
-Perfecto, Andrea.  
-A continuación tienes **LA GUÍA COMPLETA**, **CORRECTA**, **ACTUALIZADA A 2026**, **SIN ERRORES**, con **instalación desde 0**, **resolución de problemas reales que tuviste**, y en **formato Markdown** lista para copiar directamente en tu repositorio.
-
-Incluye referencias oficiales cuando corresponde:
-
-*   El repositorio oficial de paquetes está documentado en la web oficial de OCS Inventory, que distribuye los paquetes del servidor para Ubuntu desde su portal de descargas. [\[ocsinventory-ng.org\]](https://ocsinventory-ng.org/?page_id=1548&lang=en)
-*   GitHub confirma que el repositorio `OCSInventory-Server` **no tiene releases empaquetadas**, por lo que NO se deben usar URLs antiguas para descargar tar.gz. [\[github.com\]](https://github.com/OCSInventory-NG/OCSInventory-Server/releases)
-
-***
-
-# 📘 **Guía Completa: Instalación de OCS Inventory NG en Ubuntu (Método Oficial 2026)**
+# 📘 **Guía Completa: Instalación de OCS Inventory NG en Ubuntu**
 
 **Incluye resolución de todos los errores comunes**
 
